@@ -27,9 +27,7 @@ function Admin() {
     longitude: "",
   });
 
-  // ==========================================
   // CHECK AUTHENTICATION
-  // ==========================================
 
   useEffect(() => {
     let mounted = true;
@@ -65,9 +63,7 @@ function Admin() {
     };
   }, []);
 
-  // ==========================================
   // LOAD BUSES
-  // ==========================================
 
   useEffect(() => {
     if (!session) {
@@ -116,9 +112,7 @@ function Admin() {
     };
   }, [session]);
 
-  // ==========================================
   // LOGIN
-  // ==========================================
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -158,9 +152,7 @@ function Admin() {
     }
   }
 
-  // ==========================================
   // LOGOUT
-  // ==========================================
 
   async function handleLogout() {
     const { error } = await supabase.auth.signOut();
@@ -175,9 +167,7 @@ function Admin() {
     setBuses([]);
   }
 
-  // ==========================================
   // GET AUTH TOKEN
-  // ==========================================
 
   async function getAccessToken() {
     const {
@@ -198,9 +188,7 @@ function Admin() {
     return currentSession.access_token;
   }
 
-  // ==========================================
   // RELOAD BUSES
-  // ==========================================
 
   async function reloadBuses() {
     try {
@@ -231,9 +219,7 @@ function Admin() {
     }
   }
 
-  // ==========================================
   // HANDLE INPUT
-  // ==========================================
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -244,10 +230,7 @@ function Admin() {
     }));
   }
 
-  // ==========================================
   // ADD BUS
-  // ADMIN ONLY
-  // ==========================================
 
   async function handleAddBus(event) {
     event.preventDefault();
@@ -322,10 +305,7 @@ function Admin() {
     }
   }
 
-  // ==========================================
   // DELETE BUS
-  // ADMIN ONLY
-  // ==========================================
 
   async function handleDeleteBus(id, name) {
     const confirmed = window.confirm(
@@ -376,179 +356,246 @@ function Admin() {
     }
   }
 
-  // ==========================================
   // AUTH LOADING
-  // ==========================================
 
   if (authLoading) {
     return (
-      <div className="container mt-5">
-        <div className="text-center py-5">
-          <h4>🔐 Checking admin access...</h4>
+      <div className="admin-page">
+        <div className="admin-loading">
+          <div className="admin-loading-icon">🔐</div>
+          <h2>Checking Admin Access</h2>
+          <p>Please wait...</p>
         </div>
       </div>
     );
   }
 
-  // ==========================================
   // LOGIN PAGE
-  // ==========================================
 
   if (!session) {
     return (
-      <div className="container mt-5 mb-5">
-        <div
-          className="card shadow mx-auto"
-          style={{ maxWidth: "450px" }}
-        >
-          <div className="card-header bg-primary text-white text-center">
-            <h3 className="mb-0">
-              🔐 Admin Login
-            </h3>
+      <div className="admin-login-page">
+        <div className="admin-login-card">
+
+          <div className="admin-login-icon">
+            🔐
           </div>
 
-          <div className="card-body p-4">
-            <form onSubmit={handleLogin}>
-              <div className="mb-3">
-                <label className="form-label">
-                  Email
-                </label>
+          <div className="admin-login-header">
+            <div className="admin-login-badge">
+              SECURE ACCESS
+            </div>
 
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Admin email"
-                  value={email}
-                  onChange={(event) =>
-                    setEmail(event.target.value)
-                  }
-                  autoComplete="email"
-                />
-              </div>
+            <h1>Admin Login</h1>
 
-              <div className="mb-3">
-                <label className="form-label">
-                  Password
-                </label>
-
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Admin password"
-                  value={password}
-                  onChange={(event) =>
-                    setPassword(event.target.value)
-                  }
-                  autoComplete="current-password"
-                />
-              </div>
-
-              {loginError && (
-                <div className="alert alert-danger">
-                  ❌ {loginError}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                className="btn btn-primary w-100"
-                disabled={loginLoading}
-              >
-                {loginLoading
-                  ? "Signing in..."
-                  : "🔐 Login"}
-              </button>
-            </form>
+            <p>
+              Sign in to manage college buses and
+              transportation data.
+            </p>
           </div>
+
+          <form onSubmit={handleLogin}>
+
+            <div className="admin-input-group">
+              <label>Email Address</label>
+
+              <input
+                type="email"
+                placeholder="Admin email"
+                value={email}
+                onChange={(event) =>
+                  setEmail(event.target.value)
+                }
+                autoComplete="email"
+              />
+            </div>
+
+            <div className="admin-input-group">
+              <label>Password</label>
+
+              <input
+                type="password"
+                placeholder="Admin password"
+                value={password}
+                onChange={(event) =>
+                  setPassword(event.target.value)
+                }
+                autoComplete="current-password"
+              />
+            </div>
+
+            {loginError && (
+              <div className="admin-login-error">
+                ❌ {loginError}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="admin-login-btn"
+              disabled={loginLoading}
+            >
+              {loginLoading
+                ? "Signing in..."
+                : "🔐 Sign In"}
+            </button>
+
+          </form>
+
+          <div className="admin-login-footer">
+            🛡️ Authorized administrators only
+          </div>
+
         </div>
       </div>
     );
   }
 
-  // ==========================================
   // ADMIN DASHBOARD
-  // ==========================================
 
   return (
-    <div className="container mt-4 mb-5">
+    <div className="admin-page">
 
-      {/* HEADER */}
+      <section className="admin-header">
 
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="mb-0">
-          🚌 Bus Administration
-        </h1>
+        <div>
+          <div className="admin-header-badge">
+            ⚙️ ADMINISTRATION PANEL
+          </div>
 
-        <button
-          type="button"
-          className="btn btn-outline-danger"
-          onClick={handleLogout}
-        >
-          🚪 Logout
-        </button>
-      </div>
+          <h1>Bus Management</h1>
 
-      {/* ADMIN EMAIL */}
-
-      <div className="alert alert-success">
-        🔐 Logged in as:{" "}
-        <strong>
-          {session.user.email}
-        </strong>
-      </div>
-
-      {/* ADD BUS */}
-
-      <div className="card shadow mb-5">
-        <div className="card-header bg-primary text-white">
-          <h4 className="mb-0">
-            ➕ Add New Bus
-          </h4>
+          <p>
+            Manage registered buses and college
+            transportation information.
+          </p>
         </div>
 
-        <div className="card-body">
+        <div className="admin-header-right">
+
+          <div className="admin-user">
+            <span>LOGGED IN AS</span>
+            <strong>{session.user.email}</strong>
+          </div>
+
+          <button
+            type="button"
+            className="admin-logout-btn"
+            onClick={handleLogout}
+          >
+            🚪 Logout
+          </button>
+
+        </div>
+
+      </section>
+
+      <main className="admin-content">
+
+        <section className="admin-summary">
+
+          <div className="admin-summary-card">
+            <div className="admin-summary-icon">
+              🚌
+            </div>
+
+            <div>
+              <span>Total Buses</span>
+              <strong>{buses.length}</strong>
+            </div>
+          </div>
+
+          <div className="admin-summary-card">
+            <div className="admin-summary-icon">
+              🟢
+            </div>
+
+            <div>
+              <span>Moving Buses</span>
+
+              <strong>
+                {
+                  buses.filter(
+                    (bus) => bus.status === "Moving"
+                  ).length
+                }
+              </strong>
+            </div>
+          </div>
+
+          <div className="admin-summary-card">
+            <div className="admin-summary-icon">
+              ⏸️
+            </div>
+
+            <div>
+              <span>Stopped Buses</span>
+
+              <strong>
+                {
+                  buses.filter(
+                    (bus) => bus.status !== "Moving"
+                  ).length
+                }
+              </strong>
+            </div>
+          </div>
+
+        </section>
+
+
+        <section className="admin-add-card">
+
+          <div className="admin-section-heading">
+
+            <div className="admin-section-icon">
+              ➕
+            </div>
+
+            <div>
+              <h2>Add New Bus</h2>
+
+              <p>
+                Register a new college bus in the
+                tracking system.
+              </p>
+            </div>
+
+          </div>
+
           <form onSubmit={handleAddBus}>
 
-            <div className="row">
+            <div className="admin-form-grid">
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">
-                  Bus Name
-                </label>
+              <div className="admin-input-group">
+                <label>Bus Name</label>
 
                 <input
                   type="text"
                   name="name"
-                  className="form-control"
                   placeholder="Bus 5"
                   value={form.name}
                   onChange={handleChange}
                 />
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">
-                  Driver
-                </label>
+              <div className="admin-input-group">
+                <label>Driver</label>
 
                 <input
                   type="text"
                   name="driver"
-                  className="form-control"
                   placeholder="Driver name"
                   value={form.driver}
                   onChange={handleChange}
                 />
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">
-                  Status
-                </label>
+              <div className="admin-input-group">
+                <label>Status</label>
 
                 <select
                   name="status"
-                  className="form-select"
                   value={form.status}
                   onChange={handleChange}
                 >
@@ -562,47 +609,38 @@ function Admin() {
                 </select>
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">
-                  Route
-                </label>
+              <div className="admin-input-group">
+                <label>Route</label>
 
                 <input
                   type="text"
                   name="route"
-                  className="form-control"
                   placeholder="Route → College"
                   value={form.route}
                   onChange={handleChange}
                 />
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">
-                  Latitude
-                </label>
+              <div className="admin-input-group">
+                <label>Latitude</label>
 
                 <input
                   type="number"
                   step="any"
                   name="latitude"
-                  className="form-control"
                   placeholder="13.0827"
                   value={form.latitude}
                   onChange={handleChange}
                 />
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label className="form-label">
-                  Longitude
-                </label>
+              <div className="admin-input-group">
+                <label>Longitude</label>
 
                 <input
                   type="number"
                   step="any"
                   name="longitude"
-                  className="form-control"
                   placeholder="80.2707"
                   value={form.longitude}
                   onChange={handleChange}
@@ -613,7 +651,7 @@ function Admin() {
 
             <button
               type="submit"
-              className="btn btn-primary w-100"
+              className="admin-add-btn"
               disabled={loading}
             >
               {loading
@@ -622,43 +660,61 @@ function Admin() {
             </button>
 
           </form>
-        </div>
-      </div>
 
-      {/* BUS LIST */}
+        </section>
 
-      <div className="card shadow">
 
-        <div className="card-header bg-dark text-white">
-          <h4 className="mb-0">
-            🚌 Registered Buses ({buses.length})
-          </h4>
-        </div>
+        <section className="admin-buses-card">
 
-        <div className="card-body">
+          <div className="admin-section-heading">
+
+            <div className="admin-section-icon">
+              🚌
+            </div>
+
+            <div>
+              <h2>
+                Registered Buses
+                <span className="bus-total">
+                  {buses.length}
+                </span>
+              </h2>
+
+              <p>
+                Manage all buses currently registered
+                in the system.
+              </p>
+            </div>
+
+          </div>
 
           {buses.length === 0 ? (
 
-            <div className="text-center py-4">
-              <h5>No buses found</h5>
+            <div className="admin-empty">
+              <div>🚌</div>
+
+              <h3>No Buses Found</h3>
+
+              <p>
+                Add your first bus using the form above.
+              </p>
             </div>
 
           ) : (
 
-            <div className="table-responsive">
+            <div className="admin-table-wrapper">
 
-              <table className="table table-bordered table-hover align-middle">
+              <table className="admin-table">
 
-                <thead className="table-light">
+                <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Bus</th>
-                    <th>Driver</th>
-                    <th>Status</th>
-                    <th>Route</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
-                    <th>Action</th>
+                    <th>BUS</th>
+                    <th>DRIVER</th>
+                    <th>STATUS</th>
+                    <th>ROUTE</th>
+                    <th>LOCATION</th>
+                    <th>ACTION</th>
                   </tr>
                 </thead>
 
@@ -669,26 +725,30 @@ function Admin() {
                     <tr key={bus.id}>
 
                       <td>
-                        {bus.id}
+                        <span className="table-id">
+                          {bus.id}
+                        </span>
                       </td>
 
                       <td>
-                        🚌 {bus.name}
+                        <strong className="table-bus-name">
+                          🚌 {bus.name}
+                        </strong>
                       </td>
 
                       <td>
-                        {bus.driver}
+                        {bus.driver || "Not assigned"}
                       </td>
 
                       <td>
                         <span
                           className={
                             bus.status === "Moving"
-                              ? "badge bg-success"
-                              : "badge bg-secondary"
+                              ? "admin-status moving"
+                              : "admin-status stopped"
                           }
                         >
-                          {bus.status}
+                          ● {bus.status}
                         </span>
                       </td>
 
@@ -697,17 +757,17 @@ function Admin() {
                       </td>
 
                       <td>
-                        {bus.position?.[0]}
-                      </td>
-
-                      <td>
-                        {bus.position?.[1]}
+                        <span className="table-location">
+                          {bus.position?.[0]?.toFixed(5)}
+                          <br />
+                          {bus.position?.[1]?.toFixed(5)}
+                        </span>
                       </td>
 
                       <td>
                         <button
                           type="button"
-                          className="btn btn-danger btn-sm"
+                          className="admin-delete-btn"
                           onClick={() =>
                             handleDeleteBus(
                               bus.id,
@@ -731,9 +791,9 @@ function Admin() {
 
           )}
 
-        </div>
+        </section>
 
-      </div>
+      </main>
 
     </div>
   );

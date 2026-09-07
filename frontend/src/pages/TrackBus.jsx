@@ -42,29 +42,47 @@ function TrackBus() {
   }
 
   return (
-    <div className="container mt-4 mb-5">
+    <div className="track-page">
 
-      <h1 className="text-center mb-4">
-        🚌 College Bus Tracker
-      </h1>
+      <section className="track-header">
+        <div>
+          <div className="live-badge">
+            ● LIVE TRACKING
+          </div>
 
-      {error && (
-        <div className="alert alert-danger">
-          ❌ {error}
+          <h1>Track Your Bus</h1>
+
+          <p>
+            Monitor college buses and view their
+            current location in real time.
+          </p>
         </div>
-      )}
 
-      {/* BUS SELECTOR */}
+        <div className="track-header-icon">
+          🚌
+        </div>
+      </section>
 
-      <div className="card shadow mb-4">
-        <div className="card-body">
+      <main className="track-content">
 
-          <label className="form-label fw-bold">
-            Select Bus
-          </label>
+        {error && (
+          <div className="track-error">
+            ❌ {error}
+          </div>
+        )}
+
+        <section className="tracker-control">
+
+          <div>
+            <h3>Choose a Bus</h3>
+
+            <p>
+              Select a bus to view its information
+              and current location.
+            </p>
+          </div>
 
           <select
-            className="form-select"
             value={selectedBus?.id || ""}
             onChange={(event) => {
               const id = Number(event.target.value);
@@ -90,81 +108,119 @@ function TrackBus() {
             ))}
           </select>
 
-        </div>
-      </div>
+        </section>
 
-      {/* MAP */}
+        {buses.length > 0 && (
+          <section className="map-section">
 
-      {buses.length > 0 && (
-        <MapView
-          buses={buses}
-          selectedBus={selectedBus}
-          onBusSelect={handleBusSelect}
-        />
-      )}
+            <div className="map-title">
 
-      {/* BUS COUNT */}
+              <div>
+                <h2>Live Bus Locations</h2>
 
-      <div className="alert alert-info mt-4 text-center">
-        🚌 <strong>{buses.length}</strong> buses currently available
-      </div>
-
-      {/* SELECTED BUS */}
-
-      {selectedBus && (
-        <div className="card shadow mt-4">
-
-          <div className="card-header bg-primary text-white">
-            <h4 className="mb-0">
-              🚌 {selectedBus.name}
-            </h4>
-          </div>
-
-          <div className="card-body">
-
-            <div className="row">
-
-              <div className="col-md-3">
-                <strong>Driver</strong>
-                <p>{selectedBus.driver}</p>
-              </div>
-
-              <div className="col-md-3">
-                <strong>Route</strong>
-                <p>{selectedBus.route}</p>
-              </div>
-
-              <div className="col-md-3">
-                <strong>Status</strong>
                 <p>
-                  <span
-                    className={
-                      selectedBus.status === "Moving"
-                        ? "badge bg-success"
-                        : "badge bg-secondary"
-                    }
-                  >
-                    {selectedBus.status}
-                  </span>
+                  Bus positions update automatically.
                 </p>
               </div>
 
-              <div className="col-md-3">
-                <strong>Location</strong>
+              <span className="online-status">
+                ● LIVE
+              </span>
 
-                <p>
+            </div>
+
+            <MapView
+              buses={buses}
+              selectedBus={selectedBus}
+              onBusSelect={handleBusSelect}
+            />
+
+          </section>
+        )}
+
+        <div className="bus-count-card">
+
+          <div className="count-icon">
+            🚌
+          </div>
+
+          <div>
+            <strong>{buses.length}</strong>
+
+            <span>
+              Buses Currently Available
+            </span>
+          </div>
+
+        </div>
+
+        {selectedBus && (
+          <section className="selected-bus-section">
+
+            <div className="selected-bus-heading">
+
+              <div>
+                <span>SELECTED BUS</span>
+
+                <h2>
+                  🚌 {selectedBus.name}
+                </h2>
+              </div>
+
+              <span
+                className={
+                  selectedBus.status === "Moving"
+                    ? "status-moving"
+                    : "status-stopped"
+                }
+              >
+                ● {selectedBus.status}
+              </span>
+
+            </div>
+
+            <div className="bus-details-grid">
+
+              <div className="detail-box">
+                <span>DRIVER</span>
+
+                <strong>
+                  {selectedBus.driver}
+                </strong>
+              </div>
+
+              <div className="detail-box">
+                <span>ROUTE</span>
+
+                <strong>
+                  {selectedBus.route}
+                </strong>
+              </div>
+
+              <div className="detail-box">
+                <span>STATUS</span>
+
+                <strong>
+                  {selectedBus.status}
+                </strong>
+              </div>
+
+              <div className="detail-box">
+                <span>CURRENT LOCATION</span>
+
+                <strong>
                   {selectedBus.position?.[0]?.toFixed(5)}
                   {" , "}
                   {selectedBus.position?.[1]?.toFixed(5)}
-                </p>
+                </strong>
               </div>
 
             </div>
 
-          </div>
+          </section>
+        )}
 
-        </div>
-      )}
+      </main>
 
     </div>
   );
