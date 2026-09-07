@@ -1,5 +1,7 @@
+const API_URL = import.meta.env.VITE_API_URL;
+
 export async function getBuses() {
-  const response = await fetch("http://localhost:5000/api/buses");
+  const response = await fetch(`${API_URL}/api/buses`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch buses");
@@ -9,7 +11,7 @@ export async function getBuses() {
 }
 
 export async function addBus(bus) {
-  const response = await fetch("http://localhost:5000/api/buses", {
+  const response = await fetch(`${API_URL}/api/buses`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
