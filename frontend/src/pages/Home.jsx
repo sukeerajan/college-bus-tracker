@@ -23,13 +23,17 @@ function Home() {
           </p>
 
           <div className="hero-buttons">
-            <Link to="/track-bus" className="primary-btn">
+
+            {/* Track Bus */}
+            <Link to="/track" className="primary-btn">
               🚌 Track a Bus
             </Link>
 
+            {/* View Routes */}
             <Link to="/routes" className="secondary-btn">
               🗺️ View Routes
             </Link>
+
           </div>
 
         </div>
@@ -39,29 +43,38 @@ function Home() {
         </div>
       </section>
 
+
       <section className="home-features">
 
         <div className="feature-card">
           <div className="feature-icon">📍</div>
+
           <h3>Live Location</h3>
+
           <p>
             View the current location of college
             buses on the map.
           </p>
         </div>
 
+
         <div className="feature-card">
           <div className="feature-icon">🔄</div>
+
           <h3>Real-Time Updates</h3>
+
           <p>
             Bus locations are continuously updated
             for accurate tracking.
           </p>
         </div>
 
+
         <div className="feature-card">
           <div className="feature-icon">🛣️</div>
+
           <h3>Bus Routes</h3>
+
           <p>
             Easily check available buses and
             their assigned routes.
@@ -69,6 +82,7 @@ function Home() {
         </div>
 
       </section>
+
 
       <section className="home-info">
 
@@ -80,7 +94,8 @@ function Home() {
           college transportation from anywhere.
         </p>
 
-        <Link to="/track-bus" className="info-btn">
+        {/* Start Tracking */}
+        <Link to="/track" className="info-btn">
           Start Tracking →
         </Link>
 
