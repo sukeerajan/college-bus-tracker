@@ -1,6 +1,25 @@
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polyline,
+  useMap,
+} from "react-leaflet";
+
 import { useEffect } from "react";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+
+
+// Custom Bus Icon
+const busIcon = new L.Icon({
+  iconUrl: "/bus.png",
+  iconSize: [45, 45],
+  iconAnchor: [22, 42],
+  popupAnchor: [0, -42],
+});
+
 
 // Move map when a bus is selected
 function ChangeMapView({ position }) {
@@ -17,6 +36,7 @@ function ChangeMapView({ position }) {
   return null;
 }
 
+
 // Individual bus marker
 function BusMarker({ bus, onSelect }) {
   if (!bus.position || bus.position.length < 2) {
@@ -26,12 +46,14 @@ function BusMarker({ bus, onSelect }) {
   return (
     <Marker
       position={bus.position}
+      icon={busIcon}
       eventHandlers={{
         click: () => onSelect(bus),
       }}
     >
       <Popup>
         <div style={{ minWidth: "220px" }}>
+
           <h5>🚌 {bus.name}</h5>
 
           <hr />
@@ -78,14 +100,17 @@ function BusMarker({ bus, onSelect }) {
           >
             📍 View Bus
           </button>
+
         </div>
       </Popup>
     </Marker>
   );
 }
 
+
 // Main map
 function MapView({ buses, selectedBus, onBusSelect }) {
+
   if (!buses || buses.length === 0) {
     return (
       <div className="alert alert-warning text-center">
@@ -94,12 +119,14 @@ function MapView({ buses, selectedBus, onBusSelect }) {
     );
   }
 
-  // Find a bus that has a valid GPS position
+
+  // Find a bus with a valid GPS position
   const firstBus = buses.find(
     (bus) =>
       Array.isArray(bus.position) &&
       bus.position.length >= 2
   );
+
 
   if (!firstBus) {
     return (
@@ -109,11 +136,13 @@ function MapView({ buses, selectedBus, onBusSelect }) {
     );
   }
 
+
   const mapCenter =
     selectedBus &&
     Array.isArray(selectedBus.position)
       ? selectedBus.position
       : firstBus.position;
+
 
   return (
     <MapContainer
@@ -127,6 +156,7 @@ function MapView({ buses, selectedBus, onBusSelect }) {
         overflow: "hidden",
       }}
     >
+
       {/* Move map to selected bus */}
       {selectedBus &&
         Array.isArray(selectedBus.position) && (
@@ -135,11 +165,13 @@ function MapView({ buses, selectedBus, onBusSelect }) {
           />
         )}
 
+
       {/* OpenStreetMap */}
       <TileLayer
         attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+
 
       {/* Show every bus */}
       {buses.map((bus) => (
@@ -150,6 +182,7 @@ function MapView({ buses, selectedBus, onBusSelect }) {
         />
       ))}
 
+
       {/* Show selected bus route */}
       {selectedBus &&
         Array.isArray(selectedBus.stops) &&
@@ -158,8 +191,10 @@ function MapView({ buses, selectedBus, onBusSelect }) {
             positions={selectedBus.stops}
           />
         )}
+
     </MapContainer>
   );
 }
+
 
 export default MapView;
